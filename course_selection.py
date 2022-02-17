@@ -31,6 +31,7 @@ class System():
                 "source":"""Object.defineProperty(navigator, 'webdriver', {get: () => false})"""
             })
         self.driver.get(self.url)
+        
     def loot(self):
         ID = self.StudentNumberStr.get()
         PASSWORD = self.PasswordStr.get()
@@ -49,8 +50,6 @@ class System():
                 break
             except:
                 pass
-        # if(self.driver.find_elements(By.CLASS_NAME, "addbtn")):
-        #     self.courses = self.driver.find_elements(By.CLASS_NAME, "addbtn")
         self.Update()
     
     def initGUI(self):
@@ -70,7 +69,7 @@ class System():
         Password = tk.Entry(mainCanvas,textvariable=self.PasswordStr,show="*")
         Password.place(x=260,y=150,height=30,width=150)
         
-        StartBtn = tk.Button(mainCanvas,text="Start",command=threading.Thread(target=self.loot).start())
+        StartBtn = tk.Button(mainCanvas,text="Start",command=self.loot)
         StartBtn.place(x = 100, y=200,height=30,width=150)
         
         StopBtn = tk.Button(mainCanvas,text="Stop",command=self.Stop)
@@ -79,9 +78,9 @@ class System():
         ResetBtn = tk.Button(mainCanvas,text="Reset",command=self.Reset)
         ResetBtn.place(x = 260, y=250,height=30,width=150)
         self.window.mainloop()
+        
     def Stop(self):
         self.Working = False
-    
     
     def Pick(self):
         try:
@@ -103,32 +102,18 @@ class System():
             return True
         else:
             self.driver.switch_to.alert.accept()
-        return False
-        # self.courses = self.driver.find_elements(By.CLASS_NAME, "addbtn")
-        # if(self.courses):
-        #     while self.flag:
-        #         try:
-        #             self.courses[self.courses_counter].click()
-        #             print(self.courses_counter)
-        #             self.courses_counter = (self.courses_counter+1) % len(self.courses)
-        #         except:
-        #             if(EC.alert_is_present()):
-        #                 wait = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
-        #                 self.driver.switch_to.alert.accept()
-        #                 self.flag = False
-        # else:
-        #     self.Reset()
             
     def Reset(self):
         self.driver.find_element_by_xpath("//*[@id='navigation']/ul[1]/li[2]").click()
         self.driver.find_element_by_xpath("//*[@id='navigation']/ul[1]/li[2]/ul/li[1]").click()
         self.Working = True
+        self.Update()
+        
         
     def Update(self):
         if(self.Working):
-            if(self.Pick()):
-                self.Reset()
-        self.window.after(100,self.Update)
+            self.Pick()
+            self.window.after(10,self.Update)
 
 s = System()
 s.initGUI()
