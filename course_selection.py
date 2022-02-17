@@ -24,8 +24,8 @@ class System():
     courses_counter = 0
     def __init__(self):
         self.chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        self.StudentNumberStr = tk.StringVar(None,"B10815044")
-        self.PasswordStr = tk.StringVar(None,"@Skills39")
+        self.StudentNumberStr = tk.StringVar(None,"")
+        self.PasswordStr = tk.StringVar(None,"")
         self.driver = webdriver.Chrome("./chromedriver.exe", options=self.chrome_options)
         self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument",{
                 "source":"""Object.defineProperty(navigator, 'webdriver', {get: () => false})"""
@@ -43,8 +43,8 @@ class System():
             self.driver.find_element(By.ID, "btnLogIn").click()
         while True:
             try:
-                self.driver.find_element(By.CLASS_NAME, "dropdown").click()
-                self.driver.find_element(By.PARTIAL_LINK_TEXT, "電腦抽選後選課").click()
+                self.driver.find_element_by_xpath("//*[@id='navigation']/ul[1]/li[2]").click()
+                self.driver.find_element_by_xpath("//*[@id='navigation']/ul[1]/li[2]/ul/li[1]").click()
                 self.Working = True
                 break
             except:
@@ -70,7 +70,7 @@ class System():
         Password = tk.Entry(mainCanvas,textvariable=self.PasswordStr,show="*")
         Password.place(x=260,y=150,height=30,width=150)
         
-        StartBtn = tk.Button(mainCanvas,text="Start",command=self.loot)
+        StartBtn = tk.Button(mainCanvas,text="Start",command=threading.Thread(target=self.loot).start())
         StartBtn.place(x = 100, y=200,height=30,width=150)
         
         StopBtn = tk.Button(mainCanvas,text="Stop",command=self.Stop)
@@ -120,8 +120,8 @@ class System():
         #     self.Reset()
             
     def Reset(self):
-        self.driver.find_element(By.CLASS_NAME, "dropdown").click()
-        self.driver.find_element(By.PARTIAL_LINK_TEXT, "電腦抽選後選課").click()
+        self.driver.find_element_by_xpath("//*[@id='navigation']/ul[1]/li[2]").click()
+        self.driver.find_element_by_xpath("//*[@id='navigation']/ul[1]/li[2]/ul/li[1]").click()
         self.Working = True
         
     def Update(self):

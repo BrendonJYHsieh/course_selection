@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['C:\\Users\\JunYao\\Downloads\\course_selection\\course_selection.py'],
+a = Analysis(['course_selection.py'],
              pathex=[],
              binaries=[],
              datas=[],
